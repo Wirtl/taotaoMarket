@@ -31,6 +31,8 @@
     <solrj.version>4.10.3</solrj.version>
     <freemarker.version>2.3.23</freemarker.version>
     <quartz.version>2.2.2</quartz.version>
+
+    <lombok.version>1.16.16</lombok.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -191,7 +193,22 @@
         <artifactId>quartz</artifactId>
         <version>${quartz.version}</version>
       </dependency>
+
+      <!--lombok依赖-->
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <!--<dependency>-->
+        <!--<groupId>org.csource</groupId>-->
+        <!--<artifactId>fastdfs-client-java</artifactId>-->
+        <!--<version>1.27-SNAPSHOT</version>-->
+      <!--</dependency>-->
     </dependencies>
+
   </dependencyManagement>
 
   <build>
