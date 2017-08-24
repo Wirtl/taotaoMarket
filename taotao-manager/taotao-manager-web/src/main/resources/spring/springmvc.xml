@@ -10,6 +10,9 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
+
+    <!--加载配置文件-->
+    <context:property-placeholder location="classpath:properties/resource.properties"/>
     <!--配置spring mvc-->
     <!--1,开启springmvc注解模式
     a.自动注册DefaultAnnotationHandlerMapping,AnnotationMethodHandlerAdapter
