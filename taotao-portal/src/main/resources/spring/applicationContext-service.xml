@@ -12,6 +12,12 @@
     <!--扫描service包下所有使用注解的类型-->
     <context:component-scan base-package="com.taotao.portal.service"/>
 
+    <bean id="freemarkerConfig"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/WEB-INF/ftl/" />
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+
 
 
 

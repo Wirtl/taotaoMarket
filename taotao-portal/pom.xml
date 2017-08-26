@@ -75,6 +75,11 @@
           <artifactId>junit</artifactId>
       </dependency>
 
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+    </dependency>
+
 
       <!--&lt;!&ndash; Redis客户端 &ndash;&gt;-->
     <!--<dependency>-->
