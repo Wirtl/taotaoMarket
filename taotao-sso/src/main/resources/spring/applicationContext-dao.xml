@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--配置整合mybatis过程
+    1.配置数据库相关参数-->
+    <context:property-placeholder location="classpath:properties/*.properties"/>
+
+    <!--2.数据库连接池-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close">
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="maxActive" value="10" />
+        <property name="minIdle" value="5" />
+    </bean>
+
+
+    <!--约定大于配置-->
+    <!--３.配置SqlSessionFactory对象-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--往下才是mybatis和spring真正整合的配置-->
+        <!--注入数据库连接池-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--配置mybatis全局配置文件:mybatis-config.xml-->
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+        <!--扫描entity包,使用别名,多个用;隔开-->
+        <!--<property name="typeAliasesPackage" value="cn.codingxiaxw.entity"/>-->
+        <!--扫描sql配置文件:mapper需要的xml文件-->
+        <!--<property name="mapperLocations" value=""/>-->
+    </bean>
+
+    <!--４:配置扫描Dao接口包,动态实现DAO接口,注入到spring容器-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--注入SqlSessionFactory-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!-- 给出需要扫描的Dao接口-->
+        <property name="basePackage" value="com.taotao.mapper"/>
+    </bean>
+
+    <!--redisDao-->
+    <!--<bean id="redisDao" class="cn.codingxiaxw.dao.cache.RedisDao">-->
+        <!--<constructor-arg index="0" value="localhost"/>-->
+        <!--<constructor-arg index="1" value="6379"/>-->
+    <!--</bean>-->
+
+    <!--配置redis客户端单机版-->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="50"/>
+    </bean>
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="poolConfig" ref="jedisPoolConfig"></constructor-arg>
+        <constructor-arg name="host" value="${redis.host}"></constructor-arg>
+        <constructor-arg name="port" value="${redis.port}"></constructor-arg>
+        <constructor-arg name="timeout" value="2000"></constructor-arg>
+        <constructor-arg name="password" value="${redis.password}"></constructor-arg>
+    </bean>
+    <bean id="jedisClientPool" class="com.taotao.sso.component.impl.JedisClientPool"/>
+
+
+    <!--&lt;!&ndash;配置redis客户端集群版&ndash;&gt;-->
+    <!--<bean id="jedisCluster" class="redis.clients.jedis.JedisCluster">-->
+        <!--<constructor-arg>-->
+            <!--<set>-->
+                <!--<bean class="redis.clients.jedis.HostAndPort">-->
+                    <!--<constructor-arg name="host" value="${redis.host}"/>-->
+                    <!--<constructor-arg name="port" value="6379"/>-->
+                <!--</bean>-->
+                <!--<bean class="redis.clients.jedis.HostAndPort">-->
+                    <!--<constructor-arg name="host" value="${redis.host}"/>-->
+                    <!--<constructor-arg name="port" value="6380"/>-->
+                <!--</bean>-->
+                <!--<bean class="redis.clients.jedis.HostAndPort">-->
+                    <!--<constructor-arg name="host" value="${redis.host}"/>-->
+                    <!--<constructor-arg name="port" value="6381"/>-->
+                <!--</bean>-->
+                <!--<bean class="redis.clients.jedis.HostAndPort">-->
+                    <!--<constructor-arg name="host" value="${redis.host}"/>-->
+                    <!--<constructor-arg name="port" value="6382"/>-->
+                <!--</bean>-->
+            <!--</set>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+    <!--<bean id="jedisClientCluster" class="com.taotao.rest.component.impl.JedisClientCluster"></bean>-->
+
+
+
+
+</beans>
